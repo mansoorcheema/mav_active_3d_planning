@@ -70,10 +70,17 @@ bool ContinuousYawPlanningEvaluator::updateSegment(TrajectorySegment* segment) {
 }
 
 void ContinuousYawPlanningEvaluator::setBestYaw(TrajectorySegment* segment) {
+
+  if(!segment->info)
+    return;
+
   // compute gain from section overlap
   YawPlanningInfo* info =
       reinterpret_cast<YawPlanningInfo*>(segment->info.get());
   int n_ori = info->orientations.size();
+
+  if(n_ori <=0)
+    return;
   std::vector<double> gains;
   for (int i = 0; i < n_ori; ++i) {
     double gain = info->orientations[i].gain;

@@ -42,6 +42,13 @@ bool YawPlanningEvaluator::checkParamsValid(std::string* error_message) {
 }
 
 bool YawPlanningEvaluator::computeGain(TrajectorySegment* traj_in) {
+  if (traj_in->trajectory.empty()) {
+    LOG(ERROR) << "============================================================";
+    LOG(ERROR) << "YawPlanningEvaluator::computeGain() -> "
+                  "traj_in->trajectory.empty() is true.";
+    LOG(ERROR) << "============================================================";
+  }
+
   // Init
   double start_yaw = traj_in->trajectory.front().getYaw();
   double original_yaw = traj_in->trajectory.back().getYaw();
@@ -79,6 +86,11 @@ bool YawPlanningEvaluator::computeGain(TrajectorySegment* traj_in) {
       best_value = current_value;
       info->active_orientation = i;
     }
+  }
+
+  if(info->orientations.size() <= info->active_orientation){
+     LOG(ERROR) << "YawPlanningEvaluator::computeGain() : assertion failed: info->orientations.size() < info->active_orientation .";
+    return false;
   }
 
   // Apply best segment to the original one, store rest in info

@@ -304,6 +304,13 @@ bool RRT::adjustGoalPosition(const Eigen::Vector3d& start_pos,
     }
   }
   *goal_pos_ = start_pos + direction;
+  
+  direction = *goal_pos_ - start_pos;
+  
+  //check again if new goal is greater than path length
+  if (direction.norm() < p_min_path_length_) {
+    return false;
+  } 
   return true;
 }
 
@@ -317,6 +324,7 @@ bool RRT::resetTree(TrajectorySegment* root) {
   }
   kdtree_ = std::unique_ptr<KDTree>(new KDTree(3, tree_data_));
   kdtree_->addPoints(0, tree_data_.points.size() - 1);
+  return true;
 }
 
 void RRT::TreeData::clear() {

@@ -3,10 +3,12 @@
 
 #include <glog/logging.h>
 
-#include "active_3d_planning_mav/initialization/mav_package.h"
+//#include "active_3d_planning_mav/initialization/mav_package.h"
 #include "active_3d_planning_ros/module/module_factory_ros.h"
 #include "active_3d_planning_ros/planner/ros_planner.h"
 #include "active_3d_planning_voxblox/initialization/voxblox_package.h"
+
+#include <ssc_planning/initialization/ssc_package.h>
 
 int main(int argc, char** argv) {
   // leave some time for the rest to settle
@@ -17,7 +19,8 @@ int main(int argc, char** argv) {
 
   // prevent the linker from optimizing these packages away...
   active_3d_planning::initialize::voxblox_package();
-  active_3d_planning::initialize::mav_package();
+  active_3d_planning::initialize::ssc_package();
+  //active_3d_planning::initialize::mav_package();
 
   // Set logging to debug for testing
   ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME,

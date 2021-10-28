@@ -114,7 +114,7 @@ bool RRTStar::expandSegment(TrajectorySegment* target,
                         M_PI);  // random orientation
   if (p_crop_segments_) {
     new_segment = target->spawnChild();
-    connectPoses(target->trajectory.back(), goal_point,
+    bool ret = connectPoses(target->trajectory.back(), goal_point,
                  &(new_segment->trajectory),
                  false);  // collision already checked
   } else {
